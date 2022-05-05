@@ -6,8 +6,13 @@ async function getPackageDetails(repoName = '', page = '') {
   try {
     console.log("started", repoName);
     const resp = await getRepoDetails(repoName, page);
+    console.log(resp.items.length)
+    if (resp.items.length === 0) {
+      return `No repo found with the name ${repoName}`;
+    }
     let content_url = resp.items[0].contents_url;
     content_url = content_url.replace("{+path}", "package.json");
+    const fullname = resp.items[0].full_name;
     console.log('content_url', content_url);
     const configs = getConfig("GET", content_url, {});
     const blob = await axios.default(configs).then((res) => res.data.content);
@@ -21,9 +26,10 @@ async function getPackageDetails(repoName = '', page = '') {
     if (devDependencies) {
       packages = [...packages, ...Object.keys(devDependencies)];
     }
-    return packages;
+    return {fullname,packages};
   } catch (err) {
     console.log(`Error ${err.message}`);
+    return `Error while fetching data for repo ${repoName}`;
   }
 }
 async function getRepoDetails(repoName, page) {
