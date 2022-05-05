@@ -1,4 +1,6 @@
 # factset-express-app
+Start command:
+npm start
 
 Sample API calls:
 
