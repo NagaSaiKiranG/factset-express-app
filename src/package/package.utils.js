@@ -1,6 +1,6 @@
-import {PROGRAMMING_LANGUAGE} from './package.constants.js';
+import { PROGRAMMING_LANGUAGE } from './package.constants.js';
 
-export function buildSearchUrl(url, repoName = '', page = '') {
+function buildSearchUrl(url, repoName = '', page = '') {
     let urlParams = '';
     if (repoName) {
         urlParams = `q=${repoName}+language:${PROGRAMMING_LANGUAGE}&order=desc&sort=stars&per_page=1`;
@@ -13,7 +13,7 @@ export function buildSearchUrl(url, repoName = '', page = '') {
     return `${url}?${urlParams}`;
 }
 
-export function getConfig(method, url, headers) {
+function getConfig(method, url, headers) {
     return {
         method,
         url,
@@ -21,18 +21,18 @@ export function getConfig(method, url, headers) {
     };
 }
 
-export function insertFilePath(content_url, filepath) {
+function insertFilePath(content_url, filepath) {
     if (content_url === 'NA') {
         throw new Error(`No valid content_url`);
     }
     return content_url.replace("{+path}", filepath);
 }
 
-export function getRepoDetails(data, key) {
+function getRepoDetails(data, key) {
     return data.items[0][key] || 'NA';
 }
 
-export function consolidatePackages(dependencies, devDependencies, peerDependencies) {
+function consolidatePackages(dependencies, devDependencies, peerDependencies) {
     try {
         let packages = [];
         if (dependencies) {
@@ -42,7 +42,7 @@ export function consolidatePackages(dependencies, devDependencies, peerDependenc
             packages = pushKeysToArray(packages, devDependencies);
         }
         if (peerDependencies) {
-            packages= pushKeysToArray(packages, peerDependencies);
+            packages = pushKeysToArray(packages, peerDependencies);
         }
         return packages;
     } catch (e) {
@@ -54,3 +54,18 @@ function pushKeysToArray(array, object) {
     return [...array, ...Object.keys(object)];
     // console.log(array.length, JSON.stringify(object));
 }
+
+function decodeBlob(blob) {
+    return JSON.parse(
+        Buffer.from(blob, "base64").toString()
+    )
+}
+const utils = {
+    buildSearchUrl,
+    decodeBlob,
+    getConfig,
+    getRepoDetails,
+    insertFilePath,
+    consolidatePackages
+}
+export default utils;
