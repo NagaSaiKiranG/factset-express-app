@@ -2,12 +2,12 @@
 
 ## Description
 
-This is Node js project with express framework written in javascipt. \
+This is Node js project with express framework written in javascipt. <br/>
 
-This service communicates with the following upstream services:\
+This service communicates with the following upstream services:<br/>
 Github documentation: https://docs.github.com/en/rest/overview/resources-in-the-rest-api
 
-Sample API calls:
+Sample API calls: <br/>
 http://localhost:8080/packages/{repositoryname} <br/>
    This endpoint returns packages used in the javascript repository provided in url path. <br/>
 http://localhost:8080/packages/popular/{pageid} <br/>
